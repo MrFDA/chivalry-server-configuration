@@ -1,0 +1,11 @@
+{"SteamCMD" : "C:\steamcmd",
+"ServerDir" : "chivalry_ded_server",
+"ServerName" : "Put your server name here",
+"GamePassword" : "",
+"AdminPassword" : "azerty",
+"MapTypes" : ["TO","LTS","CTF","Duel","FFA","KOTH","TD"],
+"MapExclude" : ["a rejected map","another rejected map"],
+"MaxPlayers" : "32",
+"GoreLevel" : "2",
+"bAutoBalance" : "false"
+}
