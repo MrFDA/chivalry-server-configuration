@@ -7,5 +7,5 @@
 "MapExclude" : ["a rejected map","another rejected map"],
 "MaxPlayers" : "32",
 "GoreLevel" : "2",
-"bAutoBalance" : "false"
+"bAutoBalance" : "true"
 }
