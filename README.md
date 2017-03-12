@@ -49,26 +49,27 @@ Each parameter should be included within a double quotation mark (") and each li
 Parameters into brackets can contain multiple values, each value should be included within a double quotation mark and separated from the previous one with a comma.
 Do not change the parameter name (the name before the colon) (or configuration will fail).
 
-SteamCMD: path to the directory where steamcmd (a steam client usable with command line) is installed or should be installed, default "C:\steamcmd"
-ServerDir: name of the directory where the server files will be installed (or are already installed) in the steamcmd directory
-ServerName: name of the server (no kidding ^^) as it will appear in the server list
-GamePassword: password required to access to the server, leave an empty string ("") for no password
-AdminPassword: password required to gain administrator rights on the server (within the game). It is highly advised to change the default password ("azerty"). Leave an empty string ("") for no password (not recommended)
-MaxPlayers: maximum number of players allowed on the server. Default=32. Valid values for this project range from 1 to 64.
-GoreLevel: how gore is the game. Default=2(maximum). Valid values for this project range from 0 to 2 (as it seems to be the official range of values).
-bAutoBalance: should there be some autobalance between the teams ? Must be "true" (default) or "false"
-MapTypes: types of maps that should be included in the list of map available on the server. Multiple values can be set. Valid values are "TO", "LTS", "CTF", "Duel", "FFA", "KOTH", "TD". See below for more explanations
-MapExclude: name of maps that should not be included in the list of map available on the server. Multiple values can be set. Map names can be found in [MapList.txt](MapList.txt)
+Parameters available in the [configuration file](chivalry_server_configuration.py):
+- SteamCMD: path to the directory where steamcmd (a steam client usable with command line) is installed or should be installed, default "C:\steamcmd"
+- ServerDir: name of the directory where the server files will be installed (or are already installed) in the steamcmd directory
+- ServerName: name of the server (no kidding ^^) as it will appear in the server list
+- GamePassword: password required to access to the server, leave an empty string ("") for no password
+- AdminPassword: password required to gain administrator rights on the server (within the game). It is highly advised to change the default password ("azerty"). Leave an empty string ("") for no password (not recommended)
+- MaxPlayers: maximum number of players allowed on the server. Default=32. Valid values for this project range from 1 to 64.
+- GoreLevel: how gore is the game. Default=2(maximum). Valid values for this project range from 0 to 2 (as it seems to be the official range of values).
+- bAutoBalance: should there be some autobalance between the teams ? Must be "true" (default) or "false"
+- MapTypes: types of maps that should be included in the list of map available on the server. Multiple values can be set. Valid values are "TO", "LTS", "CTF", "Duel", "FFA", "KOTH", "TD". See below for more explanations
+- MapExclude: name of maps that should not be included in the list of map available on the server. Multiple values can be set. Map names can be found in [MapList.txt](MapList.txt).
 
 To launch the script, you will need one command line: right click in the folder containing the script while holding the shift key, and select 'open a command prompt here', then type 'python chivalry_server_configuration.py' (alternatively, you can use the run command of ipython)
 Three options can be set at the end of this command: 
--c path_of_the_configuration_file -- allow you to have different configurations stores and to chose which one to use (the command will look like 'python chivalry_server_configuration.py -c MyConfiguration.json')
--m path_of_the_map_list_file -- similarly, allow you to precise the path of the file containing the list of maps (could be another way to customize your set of maps)
--h -- will show the available options, i.e. -c and -m
+- -c path_of_the_configuration_file -- allow you to have different configurations stores and to chose which one to use (the command will look like 'python chivalry_server_configuration.py -c MyConfiguration.json')
+- -m path_of_the_map_list_file -- similarly, allow you to precise the path of the file containing the list of maps (could be another way to customize your set of maps)
+- -h -- will show the available options, i.e. -c and -m
 
 ##Note on maps
 The most simple way to select a set of maps is to indicate a type of map in the configuration file as described above. 
-"TO" = TEAM OBJECTIVE, "LTS" = LAST TEAM STANDING, "CTF" = CAPTURE THE FLAG, "Duel" = self explanatory ^^, "FFA" = FREE FOR ALL, "KOTH" = KING OF THE HILL, "TD" = TEAM DEATHMATCH (for more information on each mode, see the game documentation)
-All the maps included in each set are available in the [MapList.txt file](MapList.txt)
-If you don't want one (or more) specific map to be included in the set, put its name under MapExclude in [the configuration file](chivalry_server_configuration.py)
-The order of the maps is randomised each time the script is executed, and the first map (required to launch the server) is randomly chosen within this set
+"TO" = TEAM OBJECTIVE, "LTS" = LAST TEAM STANDING, "CTF" = CAPTURE THE FLAG, "Duel" = self explanatory ^^, "FFA" = FREE FOR ALL, "KOTH" = KING OF THE HILL, "TD" = TEAM DEATHMATCH (for more information on each mode, see the game documentation).
+All the maps included in each set are available in the [MapList.txt](MapList.txt) file.
+If you don't want one (or more) specific map to be included in the set, put its name under MapExclude in [the configuration file](chivalry_server_configuration.py).
+The order of the maps is randomised each time the script is executed, and the first map (required to launch the server) is randomly chosen within this set.
