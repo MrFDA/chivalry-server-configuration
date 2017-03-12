@@ -9,7 +9,7 @@ MrFDA - follow me @MrFDA69 on twitter
 - several python modules, most of them beeing 'standard' modules. More precisely:
     - os, sys, json, re, shutil, zipfile, urllib2, random, subprocess, platform
     - optparse
-	- tempfile
+	- argparse
 If some of them are not included in your python distribution, the simplest way to obtain the missing ones is with pip in the console (pip install + module_name). For more information, see python documentation.
 
 ##Objectives
@@ -59,18 +59,18 @@ Parameters available in the [configuration file](chivalry_server_configuration.p
 - GoreLevel: how gore is the game. Default=2(maximum). Valid values for this project range from 0 to 2 (as it seems to be the official range of values).
 - bAutoBalance: should there be some autobalance between the teams ? Must be "true" (default) or "false"
 - MapTypes: types of maps that should be included in the list of map available on the server. Multiple values can be set. Valid values are "TO", "LTS", "CTF", "Duel", "FFA", "KOTH", "TD". See below for more explanations
-- MapExclude: name of maps that should not be included in the list of map available on the server. Multiple values can be set. Map names can be found in [MapList.txt](MapList.txt).
+- MapExclude: name of maps that should not be included in the list of map available on the server. Multiple values can be set. Map names can be found in [MapList](MapList.txt).
 
 To launch the script, you will need one command line: right click in the folder containing the script while holding the shift key, and select 'open a command prompt here', then type 'python chivalry_server_configuration.py' (alternatively, you can use the run command of ipython)
 Four options can be set at the end of this command: 
 - -c path_of_the_configuration_file -- allow you to have different configurations stores and to chose which one to use (the command will look like 'python chivalry_server_configuration.py -c MyConfiguration.json')
 - -m path_of_the_map_list_file -- similarly, allow you to precise the path of the file containing the list of maps (could be another way to customize your set of maps)
-- -s T or F -- skip the update of the server before launch (T=true, F=false, default=F)
-- -h -- will show the available options, i.e. -c, -m and -s
+- -s -- skip the update of the server before launch
+- -h -- show the available options (i.e. -c, -m and -s) and exit the script
 
 ##Note on maps
 The most simple way to select a set of maps is to indicate a type of map in the configuration file as described above. 
 "TO" = TEAM OBJECTIVE, "LTS" = LAST TEAM STANDING, "CTF" = CAPTURE THE FLAG, "Duel" = self explanatory ^^, "FFA" = FREE FOR ALL, "KOTH" = KING OF THE HILL, "TD" = TEAM DEATHMATCH (for more information on each mode, see the game documentation).
-All the maps included in each set are available in the [MapList.txt](MapList.txt) file.
+All the maps included in each set are available in the [MapList](MapList.txt) file.
 If you don't want one (or more) specific map to be included in the set, put its name under MapExclude in [the configuration file](chivalry_server_configuration.py).
 The order of the maps is randomised each time the script is executed, and the first map (required to launch the server) is randomly chosen within this set.
