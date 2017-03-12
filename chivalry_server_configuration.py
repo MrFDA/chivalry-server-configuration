@@ -5,7 +5,7 @@ Created on Fri Mar 10 14:06:23 2017
 @author: MrFDA
 """
 
-import os,sys,json,re,shutil,zipfile,urllib2,random,subprocess
+import os,sys,json,re,shutil,zipfile,urllib2,random,subprocess,platform
 from optparse import OptionParser
 from tempfile import mkdtemp
 
@@ -19,6 +19,10 @@ def parseOpts(argv):
         metavar = 'FILE', action='store',
         default = 'MapList.txt',
         help='File containing the list of maps (default : MapList.txt)')
+    parser.add_option('-s', '--skip', dest='skip_update',
+        metavar = 'ATTR', action='store',
+        default = 'F',
+        help='Should the update of the server be skipped ? (default : F)')
     return parser, parser.parse_args(argv)
 
 
@@ -190,6 +194,15 @@ def main():
     else:
         print "Error: %s not found"%(map_list_fname)
         raise ValueError("The file containing the list of maps doesn't exist (or you mispelled its name)")
+    
+    if options.skip_update:
+        skip_update = options.skip_update
+    else:
+        skip_update= 'F'
+    if skip_update=='T':
+        skip_update = True
+    else:
+        skip_update = False
 
     param['SteamCMD'] = os.path.normpath(param['SteamCMD'])
     param['ServerDir'] = os.path.normpath(param['ServerDir'])
@@ -204,7 +217,13 @@ def main():
     random.shuffle(maps)
     
     srv_path =  os.path.join(param['SteamCMD'],param['ServerDir'])
-    udk_fname = os.path.join(srv_path,'Binaries','Win64','UDK.exe')    
+    archi = platform.architecture()[0]
+    if archi=='32bit':
+        udk_fname = os.path.join(srv_path,'Binaries','Win32','UDK.exe')
+    elif archi=='64bit':
+        udk_fname = os.path.join(srv_path,'Binaries','Win64','UDK.exe')
+    else:
+        raise ValueError("It seems that your not using a 32 of 64 bit system")
     config_path = os.path.join(srv_path,'UDKGame','Config')
     pcserver_fname = os.path.join(config_path,'PCServer-UDKGame.ini')
     pcserver_bkup_fname = os.path.join(config_path,'PCServer-UDKGame_backup.ini')
@@ -215,9 +234,11 @@ def main():
     
     if not os.path.exists(udk_fname):
         print 'Downloading and installing the dedicated server'
+        install_validate_server(param['SteamCMD'],param['ServerDir'])
     else:
-        print 'Updating the dedicated server'
-    install_validate_server(param['SteamCMD'],param['ServerDir'])
+        if not skip_update:
+            print 'Updating the dedicated server'
+            install_validate_server(param['SteamCMD'],param['ServerDir'])
     
     if not os.path.exists(pcserver_bkup_fname):
         print 'Creating a backup of the existing configuration file'
@@ -239,4 +260,8 @@ def main():
     print 'Launching the server'    
     server_launch(udk_fname,random.choice(maps))
 
-if __name__ == '__main__' : main()
+if __name__ == '__main__' :
+    if platform.system()=="Windows":
+        main()
+    else:
+        print 'This script is intended to be used on Windows platform only'

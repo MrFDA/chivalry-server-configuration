@@ -5,12 +5,12 @@ automated installation and configuration of a dedicated server for Chivalry Medi
 MrFDA - follow me @MrFDA69 on twitter
 
 ##Requirements: 
-- python 2.7 on a 64 bits Windows platform
+- python 2.7 on a Windows platform (32 and 64 bits are supported)
 - several python modules, most of them beeing 'standard' modules. More precisely:
-    - os, sys, json, re, shutil, zipfile, urllib2, random, subprocess
+    - os, sys, json, re, shutil, zipfile, urllib2, random, subprocess, platform
     - optparse
 	- tempfile
-If some of them are not included in your python distribution, the simplest way to obtain missing ones is with pip in the console (pip install + module_name). For more information, see python documentation.
+If some of them are not included in your python distribution, the simplest way to obtain the missing ones is with pip in the console (pip install + module_name). For more information, see python documentation.
 
 ##Objectives
 This project tries to simplify the installation and configuration of a dedicated server for Chivalry Medieval Warfare.
@@ -62,10 +62,11 @@ Parameters available in the [configuration file](chivalry_server_configuration.p
 - MapExclude: name of maps that should not be included in the list of map available on the server. Multiple values can be set. Map names can be found in [MapList.txt](MapList.txt).
 
 To launch the script, you will need one command line: right click in the folder containing the script while holding the shift key, and select 'open a command prompt here', then type 'python chivalry_server_configuration.py' (alternatively, you can use the run command of ipython)
-Three options can be set at the end of this command: 
+Four options can be set at the end of this command: 
 - -c path_of_the_configuration_file -- allow you to have different configurations stores and to chose which one to use (the command will look like 'python chivalry_server_configuration.py -c MyConfiguration.json')
 - -m path_of_the_map_list_file -- similarly, allow you to precise the path of the file containing the list of maps (could be another way to customize your set of maps)
-- -h -- will show the available options, i.e. -c and -m
+- -s T or F -- skip the update of the server before launch (T=true, F=false, default=F)
+- -h -- will show the available options, i.e. -c, -m and -s
 
 ##Note on maps
 The most simple way to select a set of maps is to indicate a type of map in the configuration file as described above. 
