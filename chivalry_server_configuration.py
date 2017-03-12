@@ -56,8 +56,6 @@ def load_maps(path):
                 ln = ln.strip()
                 if not (ln=='' or ln[0]==";"):
                     maps.append(ln)
-    if f.closed is not True:
-        f.close()
     return maps
 
 def map_filter(map_list,map_types):
@@ -98,8 +96,6 @@ def ini_parser(path):
                             data[activeKey][option_name] = [option_value]
                         else:
                             data[activeKey][option_name].append(option_value)
-    if f.closed is not True:
-        f.close()
     return data
 
 def write_unparsed(data,fname):
@@ -110,10 +106,11 @@ def write_unparsed(data,fname):
             else:
                 f.write('\n[' + section + ']\n')
             for option in data[section]:
-                for value in data[section][option]:
-                    f.write(option + '=' + value + '\n')
-    if f.closed is not True:
-        f.close()    
+                if isinstance(data[section][option],basestring):
+                    f.write(option + '=' + data[section][option] + '\n')
+                else:
+                    for value in data[section][option]:
+                        f.write(option + '=' + value + '\n')
 
 
 def file_download(url,path=''): # http://stackoverflow.com/questions/22676/how-do-i-download-a-file-over-http-using-python#answer-22776
