@@ -23,6 +23,9 @@ def parseArgs():
     return parser.parse_args()    
 
 def execute(cmd,shell=False): #stackoverflow.com/questions/4417546/constantly-print-subprocess-output-while-process-is-running#answer-4418193
+    """
+        A call of subprocess that displays the output in real time 
+    """
     process = subprocess.Popen(cmd, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     # Poll process for new output until finished
@@ -43,6 +46,9 @@ def execute(cmd,shell=False): #stackoverflow.com/questions/4417546/constantly-pr
 
 
 def json_load(fname):
+    """
+        Adaptation of the loads method of the json module to handle the use of '\' in path
+    """
     with open(fname,'r') as f:
         s = f.read()
     s = s.replace("\\", "\\\\")
@@ -50,6 +56,9 @@ def json_load(fname):
     return data
 
 def load_maps(path):
+    """
+        Load the list of maps from a file
+    """
     maps = []
     with open(path, 'r') as f:
             for ln in f:
@@ -59,6 +68,10 @@ def load_maps(path):
     return maps
 
 def map_filter(map_list,map_types):
+    """
+        Filter the list of maps according to the type of map (i.e. FFA (free for all), ...)
+        Valid types are TO, LTS, CTF, Duel, FFA, KOTH and TD
+    """
     available_map_types = ['TO', 'LTS', 'CTF', 'Duel', 'FFA', 'KOTH', 'TD']
     type_filter = []
     for e in map_types:
@@ -70,13 +83,24 @@ def map_filter(map_list,map_types):
     return maps
     
 def map_exclude(map_list,exclude_list):
+    """
+        Remove maps in the exlcude list from the list of maps
+    """
     maps = []
     for e in map_list:
         if e not in exclude_list:
             maps.append(e)
     return maps
 
-def ini_parser(path):
+def ini_parser(path): 
+    """
+        Parser for the server configuration file
+        Read the file, and store parameters in a dictionnary
+        Accept multiple value for an option
+    """
+    # the existing ini parser cannot handle multiple values for a key
+    # made of a general dict containing sections of the ini file, with a dict for each section containing options
+    # each option is a list to handle multiple values
     data = {}
     activeKey = ''
     with open(path, 'r') as f:
@@ -99,6 +123,12 @@ def ini_parser(path):
     return data
 
 def write_unparsed(data,fname):
+    """
+        Write the final configuration file ('fname') from the dictionnary ('data') containing the parameters
+    """
+    # intended to use the dict created by the ini_parser function
+    # i.e. expect a dict with the same structure
+    # write options in sections like in a 'ini' file
     with open(fname,'wb') as f:
         for i,section in enumerate(data):
             if i==0:
