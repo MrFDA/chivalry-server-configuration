@@ -23,6 +23,9 @@ def parseArgs():
     return parser.parse_args()    
 
 def execute(cmd,shell=False): #stackoverflow.com/questions/4417546/constantly-print-subprocess-output-while-process-is-running#answer-4418193
+    """
+        A call of subprocess that displays the output in real time 
+    """
     process = subprocess.Popen(cmd, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     # Poll process for new output until finished
@@ -43,6 +46,9 @@ def execute(cmd,shell=False): #stackoverflow.com/questions/4417546/constantly-pr
 
 
 def json_load(fname):
+    """
+        Adaptation of the loads method of the json module to handle the use of '\' in path
+    """
     with open(fname,'r') as f:
         s = f.read()
     s = s.replace("\\", "\\\\")
@@ -50,6 +56,9 @@ def json_load(fname):
     return data
 
 def load_maps(path):
+    """
+        Load the list of maps from a file
+    """
     maps = []
     with open(path, 'r') as f:
             for ln in f:
@@ -59,6 +68,10 @@ def load_maps(path):
     return maps
 
 def map_filter(map_list,map_types):
+    """
+        Filter the list of maps according to the type of map (i.e. FFA (free for all), ...)
+        Valid types are TO, LTS, CTF, Duel, FFA, KOTH and TD
+    """
     available_map_types = ['TO', 'LTS', 'CTF', 'Duel', 'FFA', 'KOTH', 'TD']
     type_filter = []
     for e in map_types:
@@ -70,13 +83,24 @@ def map_filter(map_list,map_types):
     return maps
     
 def map_exclude(map_list,exclude_list):
+    """
+        Remove maps in the exlcude list from the list of maps
+    """
     maps = []
     for e in map_list:
         if e not in exclude_list:
             maps.append(e)
     return maps
 
-def ini_parser(path):
+def ini_parser(path): 
+    """
+        Parser for the server configuration file
+        Read the file, and store parameters in a dictionnary
+        Accept multiple value for an option
+    """
+    # the existing ini parser cannot handle multiple values for a key
+    # made of a general dict containing sections of the ini file, with a dict for each section containing options
+    # each option is a list to handle multiple values
     data = {}
     activeKey = ''
     with open(path, 'r') as f:
@@ -99,6 +123,12 @@ def ini_parser(path):
     return data
 
 def write_unparsed(data,fname):
+    """
+        Write the final configuration file ('fname') from the dictionnary ('data') containing the parameters
+    """
+    # intended to use the dict created by the ini_parser function
+    # i.e. expect a dict with the same structure
+    # write options in sections like in a 'ini' file
     with open(fname,'wb') as f:
         for i,section in enumerate(data):
             if i==0:
@@ -114,6 +144,11 @@ def write_unparsed(data,fname):
 
 
 def file_download(url,path=''): # http://stackoverflow.com/questions/22676/how-do-i-download-a-file-over-http-using-python#answer-22776
+    """
+        A general purpose function for downloading a file from an url
+        The name of the file is the last part of the url
+    """
+    # could be improved to handle network errors
     file_name = url.split('/')[-1]
     file_name = os.path.join(path,file_name)
     u = urllib2.urlopen(url)
@@ -139,6 +174,11 @@ def file_download(url,path=''): # http://stackoverflow.com/questions/22676/how-d
     return file_name
 
 def int_control(int_as_string,min_value,max_value):
+    """
+        Check if a value (entered as a string) is in the range between min_value
+        and max_value. Replace the value by the min if under the min or
+        by the max if above the max. Return the checked value as a string
+    """
     x = int(int_as_string)
     if x<min_value:
         x=min_value
@@ -148,6 +188,11 @@ def int_control(int_as_string,min_value,max_value):
     return x
 
 def install_steamcmd(path):
+    """
+        Install steamCMD at the provided path 
+    """
+    # url must point towards the zip file containing steamCMD installer
+    # check if this url is still valid if installation fails
     url = 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip'
     tmp_dir = mkdtemp()
     fname = file_download(url,tmp_dir)
@@ -159,10 +204,18 @@ def install_steamcmd(path):
     
 
 def install_validate_server(cmd_path,srv_dir,app_nb=220070):
+    """
+        Uses steamCMD to install the server if not yet installed, or update the
+        installed server and validate the server files
+    """
     cmd = '"' + os.path.join(cmd_path,"steamcmd.exe") + '" +login anonymous +force_install_dir ./' + srv_dir + '/ +app_update ' + str(app_nb) + ' validate +quit'
     execute(cmd)
 
 def server_launch(udk_fname,rand_map):
+    """
+        Launch Chivalry server with the provided map
+    """
+    # "rand_map" because inteded to use a randomly chosen map
     cmd = udk_fname + ' ' + rand_map + '?steamsockets -seekfreeloadingserver'
     execute(cmd)
 
@@ -171,6 +224,7 @@ def main():
     
     print "\n#######################\n\nWelcome in MrFDA's quick server configuration script\n\n#######################\n"
     
+    # read the json configuration file
     conf_fname = os.path.normpath(options.json_conf)
     if os.path.exists(conf_fname):
         param = json_load(conf_fname)
@@ -178,6 +232,7 @@ def main():
         print "Error: %s not found"%(conf_fname)
         sys.exit("The file containing the server configuration doesn't exist (or you misspelled its name)")
     
+    # read the file containing the list of maps
     map_list_fname = os.path.normpath(options.map_list)
     if os.path.exists(map_list_fname):
         map_list = load_maps(map_list_fname)
@@ -186,7 +241,8 @@ def main():
         sys.exit("The file containing the list of maps doesn't exist (or you mispelled its name)")
     
     skip_update = options.skip_update
-
+    
+    # check provided parameters
     param['SteamCMD'] = os.path.normpath(param['SteamCMD'])
     param['ServerDir'] = os.path.normpath(param['ServerDir'])
     param['GoreLevel'] = int_control(param['GoreLevel'],0,2)
@@ -200,6 +256,7 @@ def main():
         sys.exit("At least one map should be selected, verify the types of maps you entered and the maps you excluded")
     random.shuffle(maps)
     
+    # check the system architecture 
     srv_path =  os.path.join(param['SteamCMD'],param['ServerDir'])
     archi = platform.architecture()[0]
     if archi=='32bit':
@@ -213,12 +270,14 @@ def main():
     pcserver_fname = os.path.join(config_path,'PCServer-UDKGame.ini')
     pcserver_bkup_fname = os.path.join(config_path,'PCServer-UDKGame_backup.ini')
     
+    # install steamCMD if necessary
     need_install_SteamCMD = False   
     if not os.path.exists(os.path.join(param['SteamCMD'],'steamcmd.exe')):
         need_install_SteamCMD = True
         print 'SteamCMD not found: downloading and installing it\n'
         install_steamcmd(param['SteamCMD'])
     
+    # install or update the server
     if not os.path.exists(udk_fname):
         if need_install_SteamCMD:
             print '\nDownloading and installing the dedicated server\n'
@@ -237,6 +296,8 @@ def main():
     print 'Reading configuration file'
     config = ini_parser(pcserver_fname)
     
+    # change values in the server configuration according to the json configuration file
+    # and write the new ini file
     print 'Upgrading configuration file'
     config['Engine.GameReplicationInfo']['ServerName'] = param['ServerName']
     config['Engine.AccessControl']['GamePassword'] = param['GamePassword']
@@ -251,6 +312,11 @@ def main():
     server_launch(udk_fname,random.choice(maps))
 
 if __name__ == '__main__' :
+    # check if the platform is windows
+    #  (24/03/2017) this limitation might evolve in the future but it is too
+    # "complicated"* to take into account the various distributions and packages managers
+    # to automate the installation of steamCMD on GNU/Linux 
+    # *probably mostly time consuming in fact
     if platform.system()=="Windows":
         main()
     else:
