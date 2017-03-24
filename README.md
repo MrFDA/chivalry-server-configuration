@@ -9,6 +9,7 @@ MrFDA - follow me @MrFDA69 on twitter
 - several python modules, most of them beeing 'standard' modules. More precisely:
     - os, sys, json, re, shutil, zipfile, urllib2, random, subprocess, platform
     - argparse
+
 If some of them are not included in your python distribution, the simplest way to obtain the missing ones is with pip in the console (pip install + module_name). For more information, see python documentation.
 
 ## Objectives
