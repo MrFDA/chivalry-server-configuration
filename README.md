@@ -1,10 +1,10 @@
 # chivalry-server-configuration
 automated installation and configuration of a dedicated server for Chivalry Medieval Warfare - Windows only
 
-##Author: 
+## Author: 
 MrFDA - follow me @MrFDA69 on twitter
 
-##Requirements: 
+## Requirements: 
 - python 2.7 on a Windows platform (32 and 64 bits are supported)
 - several python modules, most of them beeing 'standard' modules. More precisely:
     - os, sys, json, re, shutil, zipfile, urllib2, random, subprocess, platform
@@ -12,7 +12,7 @@ MrFDA - follow me @MrFDA69 on twitter
 	- argparse
 If some of them are not included in your python distribution, the simplest way to obtain the missing ones is with pip in the console (pip install + module_name). For more information, see python documentation.
 
-##Objectives
+## Objectives
 This project tries to simplify the installation and configuration of a dedicated server for Chivalry Medieval Warfare.
 First things first, only a small number of options are intended to be modified with this project. The selection might be higly personnal, but this project tries to stay simple and default configuration seems fine for other parameters.
 Options that can be modified with this project:
@@ -23,22 +23,22 @@ Options that can be modified with this project:
 - gore level
 - maps used ++++ (probably the most usefull part of the project)
 
-##What does this project do?
+## What does this project do?
 Check if steamcmd is installed, and install if it isn't.
 Install and update Chivalry dedicated server.
 Configure Chivalry dedicated server.
 Launch Chivalry dedicated server.
 
-##What does this project don't do?
+## What does this project don't do?
 The most important thing that is left to the user is to configure (if necessaray) its router to forward the ports used by the server (UDP protocol only).
 By default, the ports used are 7777, 7778, and 27015 (this last one beeing for steam itself) (this is true at the time this readme is being written (i.e. March 2017)).
 You might also have to allow UDP connections on this ports in your firewall, see its documentation.
 
-##Important notes
+## Important notes
 Some bits of code comes from comments on sites like stackoverflow. They are clearly identified and linked to their sources. I do not have any rights on them, and any licencing of this product do not apply to them.
 This project comes with ABSOLUTELY NO WARRANTY. Use it at your OWN RISKS. Modifing options as you like should be safe, but any sort of code injection through these parameters is likely to succed and might be disastrous.
 
-##How to use this project
+## How to use this project
 This project is mainly composed of 3 files:
 - a configuration script: core of the project, nothing should be changed here
 - a txt file containing a list of maps: based on a list available online, not intended to be modified
@@ -68,7 +68,7 @@ Four options can be set at the end of this command:
 - -s -- skip the update of the server before launch
 - -h -- show the available options (i.e. -c, -m and -s) and exit the script
 
-##Note on maps
+## Note on maps
 The most simple way to select a set of maps is to indicate a type of map in the configuration file as described above. 
 "TO" = TEAM OBJECTIVE, "LTS" = LAST TEAM STANDING, "CTF" = CAPTURE THE FLAG, "Duel" = self explanatory ^^, "FFA" = FREE FOR ALL, "KOTH" = KING OF THE HILL, "TD" = TEAM DEATHMATCH (for more information on each mode, see the game documentation).
 All the maps included in each set are available in the [MapList](MapList.txt) file.
