@@ -8,8 +8,7 @@ MrFDA - follow me @MrFDA69 on twitter
 - python 2.7 on a Windows platform (32 and 64 bits are supported)
 - several python modules, most of them beeing 'standard' modules. More precisely:
     - os, sys, json, re, shutil, zipfile, urllib2, random, subprocess, platform
-    - optparse
-	- argparse
+    - argparse
 If some of them are not included in your python distribution, the simplest way to obtain the missing ones is with pip in the console (pip install + module_name). For more information, see python documentation.
 
 ## Objectives
@@ -30,7 +29,7 @@ Configure Chivalry dedicated server.
 Launch Chivalry dedicated server.
 
 ## What does this project don't do?
-The most important thing that is left to the user is to configure (if necessaray) its router to forward the ports used by the server (UDP protocol only).
+The most important thing that is left to the user is to configure (if necessary) its router to forward the ports used by the server (UDP protocol only).
 By default, the ports used are 7777, 7778, and 27015 (this last one beeing for steam itself) (this is true at the time this readme is being written (i.e. March 2017)).
 You might also have to allow UDP connections on this ports in your firewall, see its documentation.
 
